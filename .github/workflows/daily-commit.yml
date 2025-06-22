@@ -1,8 +1,11 @@
 name: Daily Commit - 21f3000439@ds.study.iitm.ac.in
 
+permissions:
+  contents: write
+
 on:
   schedule:
-    - cron: '0 8 * * *' # Every day at 8 AM UTC
+    - cron: '0 8 * * *'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        persist-credentials: false  # Important to override default token
+        persist-credentials: false
 
     - name: Configure Git
       run: |
@@ -30,6 +33,5 @@ jobs:
         git commit -m "Daily update: $(date)" || echo "Nothing to commit"
 
     - name: Push changes
-      uses: ad-m/github-push-action@v0.6.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
